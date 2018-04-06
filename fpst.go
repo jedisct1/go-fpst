@@ -71,7 +71,11 @@ func (trie *FPST) Insert(key []byte, val interface{}) *FPST {
 	len := uint(len(key))
 	if trie == nil {
 		return &FPST{
-			key: key, val: val, idx: 0, bitmap: 0, children: make([]FPST, 1),
+			key:      key,
+			val:      val,
+			idx:      0,
+			bitmap:   0,
+			children: make([]FPST, 1),
 		}
 	}
 	t := trie
@@ -119,7 +123,11 @@ func (trie *FPST) Insert(key []byte, val interface{}) *FPST {
 	}
 	t.idx = uint16(i)
 	newNode := FPST{
-		key: key, val: val, idx: 0, bitmap: 0, children: nil,
+		key:      key,
+		val:      val,
+		idx:      0,
+		bitmap:   0,
+		children: nil,
 	}
 	t.childSet(&newNode, uint(c))
 	return trie
