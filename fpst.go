@@ -17,11 +17,14 @@ func popcount(w uint32) uint {
 }
 
 func quadbitAt(str []byte, i uint) byte {
-	c := str[i]
+	if i/2 >= uint(len(str)) {
+		return 0
+	}
+	c := str[i/2]
 	if i&1 == 0 {
 		c >>= 4
 	}
-	return c & 0xf
+	return 1 + (c & 0xf)
 }
 
 func (t *FPST) bitmapIsSet(bit uint) bool {
@@ -68,7 +71,7 @@ func New() *FPST {
 }
 
 func (trie *FPST) Insert(key []byte, val interface{}) *FPST {
-	len := uint(len(key))
+	keyLen := uint(len(key))
 	if trie == nil {
 		return &FPST{
 			key:      key,
@@ -84,16 +87,24 @@ func (trie *FPST) Insert(key []byte, val interface{}) *FPST {
 	c := byte(0)
 	for {
 		lk := t.key
+		lkLen := uint(len(lk))
+		minKeyLen := lkLen
+		if keyLen < minKeyLen {
+			minKeyLen = keyLen
+		}
 		x := byte(0)
-		for ; j <= len; j++ {
+		for ; j < minKeyLen; j++ {
 			x = lk[j] ^ key[j]
 			if x != 0 {
 				break
 			}
 		}
-		if j > len && lk[j-1] == 0 {
-			t.val = val
-			return trie
+		if x == 0 {
+			if keyLen == lkLen {
+				t.val = val
+				return trie
+			}
+			x = 0xff
 		}
 		i = j * 2
 		if (x & 0xf0) == 0 {
