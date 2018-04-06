@@ -101,14 +101,14 @@ func (trie *FPST) Insert(key []byte, val interface{}) *FPST {
 			i = uint(t.idx)
 			j = i / 2
 		} else {
-			saved_node := *t
+			savedNode := *t
 			t.key = key
 			t.val = val
 			t.idx = uint16(i)
 			t.bitmap = 0
 			t.children = nil
 			c := quadbitAt(lk, i)
-			t.childSet(&saved_node, uint(c))
+			t.childSet(&savedNode, uint(c))
 			return trie
 		}
 		c = quadbitAt(key, i)
@@ -118,10 +118,10 @@ func (trie *FPST) Insert(key []byte, val interface{}) *FPST {
 		t = t.childGet(uint(c))
 	}
 	t.idx = uint16(i)
-	new_node := FPST{
+	newNode := FPST{
 		key: key, val: val, idx: 0, bitmap: 0, children: nil,
 	}
-	t.childSet(&new_node, uint(c))
+	t.childSet(&newNode, uint(c))
 	return trie
 }
 
