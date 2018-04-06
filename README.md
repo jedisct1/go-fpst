@@ -6,3 +6,5 @@ Nothing fancy, but I needed this in order to efficiently match DNS queries again
 blacklisted domains, and it might be useful to others.
 
 This is a port of the C [FPST library](https://github.com/jedisct1/fpst).
+
+# WIP, completely broken, don't use, danger, will blow up, you've been warned
